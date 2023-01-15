@@ -1,0 +1,83 @@
+---
+export interface Props {
+  activeColor?: string;
+}
+
+const { activeColor = "#A741FF" } = Astro.props as Props
+---
+
+<div class="tabs-container">
+  <ul class="tabs-header">
+    <li class="tab">NPM</li>
+    <li class="tab">PNPM</li>
+    <li class="tab">YARN</li>
+  </ul>
+  <ul class="tabs-body">
+    <li class="tab-content">
+      <code>$ npm create astro@latest</code>
+    </li>
+    <li class="tab-content">
+      <code>$ pnpm create astro@latest</code>
+    </li>
+    <li class="tab-content">
+      <code>$ yarn create astro</code>
+    </li>
+  </ul>
+</div>
+
+<script define:vars={{activeColor}}>
+  const tabs = document.querySelectorAll("li.tab")
+  const contents = document.querySelectorAll("li.tab-content")
+
+  // Setting default tab
+  tabs[0].style.fontWeight = 800
+  tabs[0].style.color = activeColor  
+  contents.forEach((c, i) => {
+    if (i === 0) c.style.display = "flex"
+    else c.style.display = "none"
+  })
+
+  const setTab = (selectedTabIndex) => {
+    tabs.forEach((tab, i) => {
+      if (i === selectedTabIndex) {
+        tab.style.fontWeight = 800
+        tab.style.color = activeColor
+
+        contents[i].style.display = "flex"
+      } else {
+        tab.style.fontWeight = 400
+        tab.style.color = "#fff"
+
+        contents[i].style.display = "none"
+      }
+
+    }) 
+  }
+
+  tabs.forEach((tab, i) => tab.addEventListener('click', () => setTab(i)))
+</script>
+
+
+<style>
+  .tabs-container { margin-top: 30px; }
+
+  .tabs-header {
+    display: flex;
+    background: #333;
+    color: #fff;
+    padding: 10px 20px;
+  }
+
+  .tabs-header li {
+    margin-right: 20px;
+    cursor: pointer;
+  }
+
+  .tabs-body {
+    font-size: 18px;
+    padding: 20px;
+    border: 1px solid #333;
+    font-weight: bold;
+    background: #f4f4f4;
+  }
+</style>
